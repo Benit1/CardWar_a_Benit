@@ -14,9 +14,12 @@ namespace ariel {
         string shape;//(clubs (♣), diamonds (♦), hearts (♥), and spades (♠))
 
     public:
+        Card();
+
         Card(int card_number, string shape);
 
-        Card();
+        // Copy constructor
+        Card(Card &other);
 
         ~Card();
 

@@ -9,6 +9,8 @@ using namespace std;
 
 ariel::Card::Card(int card_number, string shape) {}
 
+ariel::Card::Card(ariel::Card &other) {}
+
 ariel::Card::Card() {}
 
 ariel::Card::~Card() {}
