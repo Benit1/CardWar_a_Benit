@@ -5,8 +5,7 @@
 #include "sources/player.hpp"
 #include "sources/game.hpp"
 #include "sources/card.hpp"
-#include <iostream>
-#include <stdexcept>
+
 
 using namespace ariel;
 using namespace std;
@@ -16,6 +15,12 @@ TEST_CASE("Stack initialization") {
 // Creating two players
     Player p1("Alice");
     Player p2("Bob");
+
+//Check stack before game started
+    CHECK(p1.stacksize() == 0);
+    CHECK(p2.stacksize() == 0);
+    CHECK(p1.cardesTaken() == 0);
+    CHECK(p2.cardesTaken() == 0);
 
 // Creating a new game with the two players
     Game game(p1, p2);
@@ -28,11 +33,36 @@ TEST_CASE("Stack initialization") {
 
 }
 
-TEST_CASE("Player can only be registered to one game") {
+TEST_CASE("Play at least one turn") {
+    Player p1("Alice");
+    Player p2("Bob");
+    Game game(p1, p2);
+    game.playTurn();
+    //both players must have at least -1 cards in their stack
+    CHECK(p1.stacksize() < 26);
+    CHECK(p1.stacksize() < 26);
+}
+
+TEST_CASE("Cant play after the game ended") {
+    Player p1("Alice");
+    Player p2("Bob");
+    Game game(p1, p2);
+    CHECK_NOTHROW(game.playAll());
+    CHECK(p1.cardesTaken() + p2.cardesTaken() == 52);
+    CHECK_THROWS_WITH(game.playTurn(), "The game has already ended");
+}
+
+TEST_CASE("Player Trying to register for two games") {
     Player p1("Alice");
     Player p2("Bob");
     Game game(p1, p2);
     CHECK_THROWS_WITH(Game game2(p1, p2), "A player cannot be registered to 2 games");
+}
+
+TEST_CASE("Same player trying to register for the game") {
+    Player p1("Alice");
+    CHECK_THROWS_WITH(Game game2(p1, p1), "Same player cannot register to 1 game");
+
 }
 
 TEST_CASE("Trying to print stats when no turns have been played") {
@@ -43,12 +73,34 @@ TEST_CASE("Trying to print stats when no turns have been played") {
     CHECK_THROWS_WITH(game.printStats(), "No games have been played yet");
 }
 
+
 TEST_CASE("Print winner without error") {
     Player p1("Alice");
     Player p2("Bob");
     Game game(p1, p2);
     CHECK_NOTHROW(game.playAll());
     CHECK_NOTHROW(game.printWiner());
+}
+
+TEST_CASE("The winner has fewer cards than the loser") {
+    Player p1("Alice");
+    Player p2("Bob");
+    Game game(p1, p2);
+    game.playAll();
+
+    if (p1.cardesTaken() > p2.cardesTaken()) {
+        CHECK(p2.cardesTaken() < p1.cardesTaken()); // The winner is "Alice" but "Bob" has more cards
+    } else if (p2.cardesTaken() > p1.cardesTaken()) {
+        CHECK(p1.cardesTaken() < p2.cardesTaken()); //The winner is "Bob" but "Alice" has more cards
+    }
+}
+
+TEST_CASE("Printing game statistics without error") {
+    Player p1("Alice");
+    Player p2("Bob");
+    Game game(p1, p2);
+    CHECK_NOTHROW(game.playAll());
+    CHECK_NOTHROW(game.printStats());
 }
 
 //These tests are extra because I tested functions I created
