@@ -6,30 +6,28 @@
 #define CARDWAR_A_MAIN_CARD_H
 
 #include <iostream>
-
+enum winner {
+    draw = 0, player1 = 1, player2 = 2, noWinner = 3
+};
 using namespace std;
 namespace ariel {
     class Card {
         int card_number;//(ace(1),2-10,Jack(11),queen(12),king(13))
-        string shape;//(clubs (♣), diamonds (♦), hearts (♥), and spades (♠))
+        string shape;//(Clubs (♣), Diamonds (♦), Hearts (♥), and Spades (♠))
 
     public:
         Card();
 
         Card(int card_number, string shape);
 
-        // Copy constructor
-        Card(Card &other);
 
-        ~Card();
+        string toString() const;
 
-        string toString();
+        int getCard_number() const;
 
-        int getCard_number();
+        string getShape() const;
 
-        string getShape();
-
-        int compare(Card other);
+        enum winner compare(const Card& other) const;
 
     };
 }
