@@ -1,5 +1,5 @@
 //
-// Created by chen on 4/6/23.
+// Created by beni on 4/6/23.
 //
 
 #ifndef BENIT_SYSTEMS2_EX2B_LOGGER_HPP
@@ -14,7 +14,7 @@ class Logger {
 
 private:
     std::vector<std::string> logs;
-    winner winner;
+    winner gameWinner;
 public:
 
     Logger();

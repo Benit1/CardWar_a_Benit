@@ -10,8 +10,6 @@
 #include "player.hpp"
 #include "card.hpp"
 #include "logger.hpp"
-#include "algorithm"
-#include "random"
 
 static constexpr int CARD_DECK_SIZE = 52;
 
@@ -70,6 +68,8 @@ namespace ariel {
         void drawCardEach(vector<Card> &pl1ThrownCards, vector<Card> &pl2ThrownCards, Card &pl1Card, Card &pl2Card);
 
         void setRates();
+
+        vector<Card> insertIntoDeck(vector<Card> &plThrownCards, int playerNumber) const;
     };
 }
 
